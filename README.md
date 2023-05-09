@@ -6,6 +6,7 @@ Encontrarás una estructura de proyecto conveniente para ese objetivo.
 
 ## Ejercicio 01: Ejercicio compuesto de cuentas bancarias
 El siguiente es un ejercicio compuesto de varias partes. Es un compilado para visitar y profundizar en los conceptos de Programación Orientada a Objetos. Se anima a los estudiantes a explorar el ejercicio, codificarlo y expandirlo cuanto les parezca necesario. Mediante la exploración es que se lograrán los aprendizajes más profundos, se debe tomar este ejercicio como un mapa: marca el camino, pero si nos desviamos para descubrir nuevas áreas, siempre podemos retomar sendero gracias a él.
+
 Se recomienda agregar los tests necesarios para poder comprobar que el comportamiento deseado es obtenido, y que al continuar a la siguiente parte, todo lo anterior siga funcionando de manera correcta
 
 ### Parte 1: Estructuras de Datos
