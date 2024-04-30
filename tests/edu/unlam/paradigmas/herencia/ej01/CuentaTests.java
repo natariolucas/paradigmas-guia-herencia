@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class CuentaTests {
 
 	@Test
-	void TestInicializarcuenta() {
+	void TestInicializarCuenta() {
 		Cuenta cuenta = new Cuenta();
 		
 		assertEquals(0, cuenta.getSaldo());
@@ -105,7 +105,7 @@ class CuentaTests {
 		
 		assertTrue(cuentaOrigen.Transferir(999.0001, cuentaDestino));
 		assertEquals(1099.0001, cuentaDestino.getSaldo());
-		assertEquals(0.0009, cuentaOrigen.getSaldo(), 3);
+		assertEquals(0.0009, cuentaOrigen.getSaldo(), 3); // TODO: Otro tipo de dato que solucione la precisión?
 	}
 	
 	@Test

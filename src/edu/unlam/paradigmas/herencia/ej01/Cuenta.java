@@ -1,7 +1,7 @@
 package edu.unlam.paradigmas.herencia.ej01;
 
 public class Cuenta {
-	private double saldo = 0;
+	protected double saldo = 0;
 	
 	public Cuenta() {
 		
