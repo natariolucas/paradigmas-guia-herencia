@@ -10,38 +10,54 @@ class CuentaTests {
 	void TestInicializarcuenta() {
 		Cuenta cuenta = new Cuenta();
 		
-		assertEquals(0, cuenta.saldo);
+		assertEquals(0, cuenta.getSaldo());
 	}
 	
 	@Test
-	void TestAcreditacionInicial() {
+	void TestDepositoPositivo() {
 		Cuenta cuenta = new Cuenta();
 		
-		cuenta.saldo += 1000; // Acreditar saldo
-		
-		assertEquals(1000, cuenta.saldo);
+		assertTrue(cuenta.Depositar(1000));
+		assertEquals(1000, cuenta.getSaldo());
 	}
 	
 	@Test
-	void TestAcreditacionYRetiro() {
+	void TestDepositoCeroONegativo() {
 		Cuenta cuenta = new Cuenta();
 		
-		cuenta.saldo += 1000; // Acreditar saldo
-		cuenta.saldo -= 100; // Descontar saldo
-
-		
-		assertEquals(900, cuenta.saldo);
+		assertTrue(cuenta.Depositar(100));
+		assertFalse(cuenta.Depositar(0));
+		assertFalse(cuenta.Depositar(-50));
+		assertEquals(100, cuenta.getSaldo());
 	}
 	
 	@Test
-	void TestDescuentoMasDelDisponible() { // Por ahora permite negativo
+	void TestExtraerDisponible() {
 		Cuenta cuenta = new Cuenta();
 		
-		cuenta.saldo += 500; // Acreditar saldo
-		cuenta.saldo -= 800; // Descontar saldo
-
+		assertTrue(cuenta.Depositar(100));
+		assertTrue(cuenta.Extraer(10));
+		assertEquals(90, cuenta.getSaldo());
+	}
+	
+	@Test
+	void TestExtraerCeroONegativo() {
+		Cuenta cuenta = new Cuenta();
 		
-		assertEquals(-300, cuenta.saldo);
+		assertTrue(cuenta.Depositar(100));
+		assertFalse(cuenta.Extraer(0));
+		assertFalse(cuenta.Extraer(-10));
+		assertEquals(100, cuenta.getSaldo());
+	}
+	
+	@Test
+	void TestExtraerMasDelDisponible() {
+		Cuenta cuenta = new Cuenta();
+		
+		assertTrue(cuenta.Depositar(100));
+		assertTrue(cuenta.Extraer(90));
+		assertFalse(cuenta.Extraer(20));
+		assertEquals(10, cuenta.getSaldo());
 	}
 
 }
