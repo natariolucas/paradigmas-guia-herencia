@@ -1,7 +1,7 @@
 package edu.unlam.paradigmas.herencia.ej01;
 
 public class Cuenta {
-	private float saldo = 0;
+	private double saldo = 0;
 	
 	public Cuenta() {
 		
@@ -16,7 +16,7 @@ public class Cuenta {
 	 * 
 	 * 
 	 * */
-	public boolean Depositar(float montoADepositar) {
+	public boolean Depositar(double montoADepositar) {
 		if (montoADepositar > 0) {
 			this.saldo += montoADepositar;
 			return true;
@@ -25,7 +25,7 @@ public class Cuenta {
 		return false;
 	}
 	
-	public float getSaldo() {
+	public double getSaldo() {
 		return this.saldo;
 	}
 	
@@ -40,13 +40,28 @@ public class Cuenta {
 	 * El deposito de cero se considera exitoso (no negativo)
 	 * 
 	 * */
-	public boolean Extraer(float montoAExtraer) {
+	public boolean Extraer(double montoAExtraer) {
 		if (montoAExtraer > 0 && this.saldo >= montoAExtraer) {
 			this.saldo -= montoAExtraer;
 			return true;
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * No permite transferir ni cero ni negativo, en tal caso devuelve false.
+	 * 
+	 * El monto a transferir se acredita en la cuenta destino
+	 * */
+	public boolean Transferir(double montoATransferir, Cuenta cuentaDestino) {
+		if (!this.Extraer(montoATransferir) ) {
+			return false;
+		}
+		
+		cuentaDestino.Depositar(montoATransferir);
+		
+		return true;
 	}
 
 }

@@ -41,6 +41,15 @@ class CuentaTests {
 	}
 	
 	@Test
+	void TestExtraerDisponiblePrecision() {
+		Cuenta cuenta = new Cuenta();
+		
+		assertTrue(cuenta.Depositar(100));
+		assertTrue(cuenta.Extraer(10.99993));
+		assertEquals(89.00007, cuenta.getSaldo());
+	}
+	
+	@Test
 	void TestExtraerCeroONegativo() {
 		Cuenta cuenta = new Cuenta();
 		
@@ -57,7 +66,85 @@ class CuentaTests {
 		assertTrue(cuenta.Depositar(100));
 		assertTrue(cuenta.Extraer(90));
 		assertFalse(cuenta.Extraer(20));
-		assertEquals(10, cuenta.getSaldo());
+		assertEquals(10	, cuenta.getSaldo());
+	}
+	
+	@Test
+	void TestTransferenciaExitosa() {
+		Cuenta cuentaOrigen = new Cuenta();
+		Cuenta cuentaDestino = new Cuenta();
+		
+		assertTrue(cuentaOrigen.Depositar(1000));
+		assertTrue(cuentaDestino.Depositar(100));
+		
+		assertTrue(cuentaOrigen.Transferir(100, cuentaDestino));
+		assertEquals(200, cuentaDestino.getSaldo());
+		assertEquals(900, cuentaOrigen.getSaldo());
+	}
+	
+	@Test
+	void TestTransferenciaExacta() {
+		Cuenta cuentaOrigen = new Cuenta();
+		Cuenta cuentaDestino = new Cuenta();
+		
+		assertTrue(cuentaOrigen.Depositar(1000));
+		assertTrue(cuentaDestino.Depositar(100));
+		
+		assertTrue(cuentaOrigen.Transferir(1000, cuentaDestino));
+		assertEquals(1100, cuentaDestino.getSaldo());
+		assertEquals(0, cuentaOrigen.getSaldo());
+	}
+	
+	@Test
+	void TestTransferenciaConPrecision() {
+		Cuenta cuentaOrigen = new Cuenta();
+		Cuenta cuentaDestino = new Cuenta();
+		
+		assertTrue(cuentaOrigen.Depositar(1000));
+		assertTrue(cuentaDestino.Depositar(100));
+		
+		assertTrue(cuentaOrigen.Transferir(999.0001, cuentaDestino));
+		assertEquals(1099.0001, cuentaDestino.getSaldo());
+		assertEquals(0.0009, cuentaOrigen.getSaldo(), 3);
+	}
+	
+	@Test
+	void TestTransferenciaCero() {
+		Cuenta cuentaOrigen = new Cuenta();
+		Cuenta cuentaDestino = new Cuenta();
+		
+		assertTrue(cuentaOrigen.Depositar(1000));
+		assertTrue(cuentaDestino.Depositar(100));
+		
+		assertFalse(cuentaOrigen.Transferir(0, cuentaDestino));
+		assertEquals(100, cuentaDestino.getSaldo());
+		assertEquals(1000, cuentaOrigen.getSaldo());
+	}
+	
+	@Test
+	void TestTransferenciaNegativa() {
+		Cuenta cuentaOrigen = new Cuenta();
+		Cuenta cuentaDestino = new Cuenta();
+		
+		assertTrue(cuentaOrigen.Depositar(1000));
+		assertTrue(cuentaDestino.Depositar(100));
+		
+		assertFalse(cuentaOrigen.Transferir(-200, cuentaDestino));
+		assertEquals(100, cuentaDestino.getSaldo());
+		assertEquals(1000, cuentaOrigen.getSaldo());
+	}
+	
+	@Test
+	void TestTransferenciaMayorAlDisponible() {
+		Cuenta cuentaOrigen = new Cuenta();
+		Cuenta cuentaDestino = new Cuenta();
+		
+		assertTrue(cuentaOrigen.Depositar(1000));
+		assertTrue(cuentaDestino.Depositar(100));
+		
+		assertFalse(cuentaOrigen.Transferir(99999, cuentaDestino));
+		assertEquals(100, cuentaDestino.getSaldo());
+		assertEquals(1000, cuentaOrigen.getSaldo());
 	}
 
 }
