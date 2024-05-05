@@ -105,7 +105,7 @@ class CuentaTests {
 		
 		assertTrue(cuentaOrigen.Transferir(999.0001, cuentaDestino));
 		assertEquals(1099.0001, cuentaDestino.getSaldo());
-		assertEquals(0.0009, cuentaOrigen.getSaldo(), 3); // TODO: Otro tipo de dato que solucione la precisión?
+		assertEquals(0.0009, cuentaOrigen.getSaldo(), 3);
 	}
 	
 	@Test

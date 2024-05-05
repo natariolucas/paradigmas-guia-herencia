@@ -13,14 +13,26 @@ public class CuentaDeAhorro extends Cuenta {
 	 * El monto a reservar se descuenta del saldo y se suma al saldo secundario
 	 * */
 	public boolean ReservarSaldo(double montoAReservar) {
-		if (montoAReservar > 0 && this.saldo >= montoAReservar) {
-			this.saldo -= montoAReservar;
-			this.saldoSecundario += montoAReservar;
+		if (this.saldoSuficienteParaDebitar(montoAReservar)) {
+			this.debitar(montoAReservar);
+			this.acreditarSaldoSecundario(montoAReservar);;
 			
 			return true;
 		}
 		
 		return false;
+	}
+	
+	private void acreditarSaldoSecundario(double monto) {
+		this.saldoSecundario += monto;
+	}
+	
+	private void debitarSaldoSecundario(double monto) {
+		this.saldoSecundario -= monto;
+	}
+	
+	protected boolean saldoSecundarioSuficienteParaDebitar(double monto) {
+		return monto > 0 && this.saldoSecundario >= monto;
 	}
 	
 	/**
@@ -30,9 +42,9 @@ public class CuentaDeAhorro extends Cuenta {
 	 * No se puede reintegrar un monto mayor al saldo secundario
 	 * */
 	public boolean ReintegrarSaldo(double montoAReintegrar) {
-		if (montoAReintegrar > 0 && this.saldoSecundario >= montoAReintegrar) {
-			this.saldoSecundario -= montoAReintegrar;
-			this.saldo += montoAReintegrar;
+		if (this.saldoSecundarioSuficienteParaDebitar(montoAReintegrar)) {
+			this.debitarSaldoSecundario(montoAReintegrar);;
+			this.acreditar(montoAReintegrar);
 			
 			return true;
 		}

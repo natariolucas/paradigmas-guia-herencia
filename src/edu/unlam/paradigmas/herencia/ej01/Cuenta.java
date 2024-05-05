@@ -3,6 +3,10 @@ package edu.unlam.paradigmas.herencia.ej01;
 public class Cuenta {
 	protected double saldo = 0;
 	
+	public static String MOTIVO_TRANSACCION_TRANSFERENCIA = "Transferencia";
+	public static String MOTIVO_TRANSACCION_DEPOSITO = "Deposito";
+	public static String MOTIVO_TRANSACCION_EXTRACCION = "Extraccion";
+	
 	public Cuenta() {
 		
 	}
@@ -18,11 +22,23 @@ public class Cuenta {
 	 * */
 	public boolean Depositar(double montoADepositar) {
 		if (montoADepositar > 0) {
-			this.saldo += montoADepositar;
+			this.acreditar(montoADepositar);
 			return true;
 		}
 		
 		return false;
+	}
+	
+	protected void acreditar (double monto) {
+		this.saldo+= monto;
+	}
+	
+	protected void debitar (double monto) {
+		this.saldo -= monto;
+	}
+	
+	protected boolean saldoSuficienteParaDebitar(double monto) {
+		return monto > 0 && this.saldo >= monto;
 	}
 	
 	public double getSaldo() {
@@ -41,8 +57,9 @@ public class Cuenta {
 	 * 
 	 * */
 	public boolean Extraer(double montoAExtraer) {
-		if (montoAExtraer > 0 && this.saldo >= montoAExtraer) {
-			this.saldo -= montoAExtraer;
+		if (this.saldoSuficienteParaDebitar(montoAExtraer)) {
+			this.debitar(montoAExtraer);
+			
 			return true;
 		}
 		
@@ -55,13 +72,15 @@ public class Cuenta {
 	 * El monto a transferir se acredita en la cuenta destino
 	 * */
 	public boolean Transferir(double montoATransferir, Cuenta cuentaDestino) {
-		if (!this.Extraer(montoATransferir) ) {
+		if(!this.saldoSuficienteParaDebitar(montoATransferir)) {
 			return false;
 		}
 		
-		cuentaDestino.Depositar(montoATransferir);
+		this.debitar(montoATransferir);
+		cuentaDestino.acreditar(montoATransferir);
 		
 		return true;
 	}
+	
 
 }
