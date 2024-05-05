@@ -2,11 +2,10 @@ package edu.unlam.paradigmas.herencia.ej01;
 
 public class CuentaDeAhorro extends Cuenta {
 
-	private double saldoSecundario = 0;
+	private static final String MOTIVO_TRANSACCION_RESERVA_DE_SALDO = "reserva";
+	private static final String MOTIVO_TRANSACCION_REINTEGRO_DE_SALDO = "reintegro de reserva";
 	
-	public CuentaDeAhorro() {
-		super();
-	}
+	private double saldoSecundario = 0;
 	
 	/**
 	 * No permite reservar cero ni negativo
@@ -14,7 +13,7 @@ public class CuentaDeAhorro extends Cuenta {
 	 * */
 	public boolean ReservarSaldo(double montoAReservar) {
 		if (this.saldoSuficienteParaDebitar(montoAReservar)) {
-			this.debitar(montoAReservar);
+			this.debitar(montoAReservar, MOTIVO_TRANSACCION_RESERVA_DE_SALDO);
 			this.acreditarSaldoSecundario(montoAReservar);;
 			
 			return true;
@@ -44,7 +43,7 @@ public class CuentaDeAhorro extends Cuenta {
 	public boolean ReintegrarSaldo(double montoAReintegrar) {
 		if (this.saldoSecundarioSuficienteParaDebitar(montoAReintegrar)) {
 			this.debitarSaldoSecundario(montoAReintegrar);;
-			this.acreditar(montoAReintegrar);
+			this.acreditar(montoAReintegrar, MOTIVO_TRANSACCION_REINTEGRO_DE_SALDO);
 			
 			return true;
 		}

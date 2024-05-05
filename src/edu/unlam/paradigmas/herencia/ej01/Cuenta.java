@@ -1,15 +1,16 @@
 package edu.unlam.paradigmas.herencia.ej01;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Cuenta {
+	public static final String MOTIVO_TRANSACCION_DEPOSITO = "deposito";
+	public static final String MOTIVO_TRANSACCION_EXTRACCION = "extraccion";
+	public static final String MOTIVO_TRANSACCION_TRANSFERENCIA_DEBITO = "transferencia_debito";
+	public static final String MOTIVO_TRANSACCION_TRANSFERENCIA_ACREDITACION = "transferencia_acreditacion";
+	
 	protected double saldo = 0;
-	
-	public static String MOTIVO_TRANSACCION_TRANSFERENCIA = "Transferencia";
-	public static String MOTIVO_TRANSACCION_DEPOSITO = "Deposito";
-	public static String MOTIVO_TRANSACCION_EXTRACCION = "Extraccion";
-	
-	public Cuenta() {
-		
-	}
+	protected ArrayList<Transaccion> transacciones = new ArrayList<Transaccion>();
 	
 	/**
 	 * 
@@ -22,19 +23,31 @@ public class Cuenta {
 	 * */
 	public boolean Depositar(double montoADepositar) {
 		if (montoADepositar > 0) {
-			this.acreditar(montoADepositar);
+			this.acreditar(montoADepositar, MOTIVO_TRANSACCION_DEPOSITO);
 			return true;
 		}
 		
 		return false;
 	}
 	
-	protected void acreditar (double monto) {
+	protected void acreditar (double monto, String motivo) {
 		this.saldo+= monto;
+		this.pushTransaccion(monto, motivo);
 	}
 	
-	protected void debitar (double monto) {
+	protected void debitar (double monto, String motivo) {
 		this.saldo -= monto;
+		this.pushTransaccion(monto, motivo);
+	}
+	
+	private void pushTransaccion(double monto, String motivo) {
+		this.transacciones.add(
+				new Transaccion(
+						monto,
+						motivo,
+						new Date()
+				)
+		);
 	}
 	
 	protected boolean saldoSuficienteParaDebitar(double monto) {
@@ -58,7 +71,7 @@ public class Cuenta {
 	 * */
 	public boolean Extraer(double montoAExtraer) {
 		if (this.saldoSuficienteParaDebitar(montoAExtraer)) {
-			this.debitar(montoAExtraer);
+			this.debitar(montoAExtraer, MOTIVO_TRANSACCION_EXTRACCION);
 			
 			return true;
 		}
@@ -76,11 +89,13 @@ public class Cuenta {
 			return false;
 		}
 		
-		this.debitar(montoATransferir);
-		cuentaDestino.acreditar(montoATransferir);
+		this.debitar(montoATransferir, MOTIVO_TRANSACCION_TRANSFERENCIA_DEBITO);
+		cuentaDestino.acreditar(montoATransferir, MOTIVO_TRANSACCION_TRANSFERENCIA_ACREDITACION);
 		
 		return true;
 	}
 	
-
+	public ArrayList<Transaccion> getTransacciones() {
+		return this.transacciones;
+	}
 }
