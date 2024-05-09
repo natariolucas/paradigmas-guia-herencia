@@ -6,6 +6,7 @@ import java.util.List;
 
 public class TarjetaCredito {
 	private static final String MOTIVO_COMPRA_TRANSACCION = "compra";
+	private static final double FACTOR_INTERES = 1.03;
 	
 	private List<Transaccion> transacciones;
 	private Cuenta cuenta;
@@ -37,7 +38,7 @@ public class TarjetaCredito {
 		}
 		
 		double total = this.ObtenerTotalDeTransacciones();
-		total = total * 1.03;
+		total = total * FACTOR_INTERES;
 		if (!this.cuenta.saldoSuficienteParaDebitar(total)) {
 			return false;
 		}
