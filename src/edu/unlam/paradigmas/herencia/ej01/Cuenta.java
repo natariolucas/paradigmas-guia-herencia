@@ -8,6 +8,8 @@ public class Cuenta {
 	public static final String MOTIVO_TRANSACCION_EXTRACCION = "extraccion";
 	public static final String MOTIVO_TRANSACCION_TRANSFERENCIA_DEBITO = "transferencia_debito";
 	public static final String MOTIVO_TRANSACCION_TRANSFERENCIA_ACREDITACION = "transferencia_acreditacion";
+	public static final String MOTIVO_TRANSACCION_COMPRA_DEBITO = "compra_debito";
+	public static final String MOTIVO_TRANSACCION_PAGO_TARJETA_CREDITO= "pago_tarjeta_credito";
 	
 	protected double saldo = 0;
 	protected ArrayList<Transaccion> transacciones = new ArrayList<Transaccion>();
@@ -70,8 +72,20 @@ public class Cuenta {
 	 * 
 	 * */
 	public boolean Extraer(double montoAExtraer) {
-		if (this.saldoSuficienteParaDebitar(montoAExtraer)) {
-			this.debitar(montoAExtraer, MOTIVO_TRANSACCION_EXTRACCION);
+		return this.DebitarDineroDisponible(montoAExtraer, MOTIVO_TRANSACCION_EXTRACCION);
+	}
+	
+	public boolean CompraDebito(double montoAExtraer) {
+		return this.DebitarDineroDisponible(montoAExtraer, MOTIVO_TRANSACCION_COMPRA_DEBITO);
+	}
+	
+	public boolean PagarTarjetaCredito(double monto) {
+		return this.DebitarDineroDisponible(monto, MOTIVO_TRANSACCION_PAGO_TARJETA_CREDITO);
+	}
+	
+	protected boolean DebitarDineroDisponible(double monto, String motivo) {
+		if (this.saldoSuficienteParaDebitar(monto)) {
+			this.debitar(monto, motivo);
 			
 			return true;
 		}
